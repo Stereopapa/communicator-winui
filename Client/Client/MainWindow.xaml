@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="Client.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Client"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="MainWindow">
+
+    <NavigationView x:Name="MainNavigation"
+                    Loaded="NavigationView_Loaded"
+                    SelectionChanged="NavigationView_SelectionChanged"                                                             
+                    Margin="0"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicElementBrush }"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    IsSettingsVisible="False"
+                        >
+                    
+        <NavigationView.MenuItems>
+            <NavigationViewItem Icon="Admin" 
+                                Content="Connect to Server"
+                                Tag="Client.Views.ConnectPage" />
+            <NavigationViewItem Icon="Contact2"
+                                Content="Chat"
+                                Tag="Client.Views.MainPage" />
+        </NavigationView.MenuItems>
+        <Frame x:Name="MainFrame" Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"/>
+    </NavigationView>
+</Window>

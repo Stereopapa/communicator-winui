@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Client.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Client.Core.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.Converters"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <toolkit:BoolToVisibilityConverter 
+            x:Key="BoolToAligmentConventer"
+            TrueValue="right"
+            FalseValue="left"/>
+
+        <toolkit:BoolToVisibilityConverter 
+            x:Key="BoolToColumnConventer"
+            TrueValue="2"
+            FalseValue="0"/>
+
+        <toolkit:BoolToVisibilityConverter 
+            x:Key="BoolToForegroundConventer"
+            TrueValue="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+            FalseValue="{ThemeResource TextFillColorPrimaryBrush}"/>
+
+        <toolkit:BoolToVisibilityConverter 
+            x:Key="BoolToBackgroundConventer"
+            TrueValue="{ThemeResource AccentFillColorTertiaryBrush}"
+            FalseValue="{ThemeResource ControlAltFillColorTransparentBrush}"/>   
+
+
+        <DataTemplate x:Key="MessageListView_ItemTemplate" x:DataType="local:Message">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel 
+                    Orientation="Vertical"
+                    Width="Auto"
+                    Margin="4"
+                    MaxWidth="Infinity"
+                    HorizontalAlignment="{x:Bind IsMine, Mode=OneWay,
+                    Converter={StaticResource BoolToAligmentConventer}}"
+                    Grid.Column="{x:Bind IsMine, Mode=OneWay,
+                    Converter={StaticResource BoolToColumnConventer}}">
+
+                    <TextBlock
+                       Width="auto"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                       Text="{x:Bind User}"
+                       Margin="8,0"
+                       HorizontalAlignment="{x:Bind IsMine, Mode=OneWay,
+                       Converter={StaticResource BoolToAligmentConventer}}"/>
+                    <Border 
+                        BorderThickness="1"
+                        BorderBrush="{ThemeResource CircleElevationBorderBrush}"
+                        CornerRadius="16"
+                       
+                        Background="{x:Bind IsMine, Mode=OneWay,
+                        Converter={StaticResource BoolToBackgroundConventer}}">
+                        <TextBlock
+                                HorizontalAlignment="Center"
+                                Width="auto"
+                                Height="auto"
+                                Foreground="{x:Bind IsMine, Mode=OneWay,
+                                Converter={StaticResource BoolToForegroundConventer}}"
+                                Text="{x:Bind Content}"
+                                TextWrapping="Wrap"
+                                Margin="8"
+                                />
+                    </Border>
+
+                </StackPanel>
+            </Grid>
+            
+            
+        </DataTemplate>
+        
+        <ItemsPanelTemplate x:Name="MessageListViw_ItemsPanelTemplate">
+            <ItemsStackPanel VerticalAlignment="Bottom"
+                            ItemsUpdatingScrollMode="KeepLastItemInView"
+                            FlowDirection="LeftToRight"/>
+        </ItemsPanelTemplate>
+    </Page.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <ListView 
+            ItemTemplate="{StaticResource MessageListView_ItemTemplate}"
+            ItemsPanel="{StaticResource MessageListViw_ItemsPanelTemplate}"
+            VerticalContentAlignment="Bottom"
+            ItemsSource="{x:Bind viewModel.Messages}"
+            x:Name="ListView_Messages"
+            SelectionMode="None"
+            IsItemClickEnabled="False"
+            Margin="8"
+            Grid.Row="0"
+            />
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="1"
+                    Padding="16">
+            <TextBox Text="{x:Bind viewModel.CurrentMessage, Mode=TwoWay }"
+                    AutomationProperties.Name="multi-line TextBox"
+                    TextWrapping="Wrap"
+                    IsSpellCheckEnabled="True" 
+                    MinWidth="300"
+                    KeyDown="TextBox_SendMessage"
+                    Style="{StaticResource ComboBoxTextBoxStyle}"
+             />
+            <Button Content="Send Messege"
+                    Command="{x:Bind viewModel.SendMessageCommand}"
+                    Style="{StaticResource AccentButtonStyle}"
+                    Margin="8,0,0,0"
+                    />
+        </StackPanel>
+    </Grid>
+</Page>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Client.Views.ConnectPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Client.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.Converters"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <toolkit:BoolToVisibilityConverter 
+            x:Key="BoolToVisibilityConverter"
+            TrueValue="Visible" FalseValue="Collapsed"/>
+        <toolkit:BoolToVisibilityConverter 
+            x:Key="InverseBoolToVisibilityConverter"
+            TrueValue="Collapsed" FalseValue="Visible"/>
+    </Page.Resources>
+    
+
+    <Grid Margin="128">
+        <Grid x:Name="serverConnectionForm"
+              Visibility="{Binding isConnected, Mode=OneWay, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition  Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Username:" 
+                       Grid.Column="0" Grid.Row="0" 
+                       TextAlignment="Right" VerticalAlignment="Center"
+                       Margin="0,8,16,8"/>
+            <TextBox Text="{x:Bind viewModel.username, Mode=TwoWay}" 
+                     PlaceholderText="Enter your username"
+                     Grid.Column="1" Grid.Row="0"
+                     Margin="0,8"/>
+
+            <TextBlock Text="Server IP:" 
+                       Grid.Column="0" Grid.Row="1" 
+                       TextAlignment="Right" VerticalAlignment="Center"
+                       Margin="0,8,16,8"/>
+            <TextBox Text="{x:Bind viewModel.ipAddress, Mode=TwoWay}" 
+                     PlaceholderText="127.0.0.1"
+                     Grid.Column="1" Grid.Row="1"
+                     Margin="0,8"/>
+
+            <TextBlock Text="Server Port:" 
+                       Grid.Column="0" Grid.Row="2" 
+                       TextAlignment="Right" VerticalAlignment="Center"
+                       Margin="0,8,16,8"/>
+            <TextBox Text="{x:Bind viewModel.port, Mode=TwoWay}" 
+                     PlaceholderText="127.0.0.1"
+                     Grid.Column="1" Grid.Row="2"
+                     Margin="0,8"/>
+
+            <TextBlock Text="{x:Bind viewModel.ErrorMes, Mode=OneWay}"
+                       Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                       Visibility="{x:Bind viewModel.isError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                       Margin="16" Grid.Row="3" Grid.ColumnSpan="2"
+                       HorizontalAlignment="Center"/>
+
+            <Button Content="Connect" 
+                    Grid.ColumnSpan="2" Grid.Row="4"
+                    HorizontalAlignment="Center"
+                    Command="{x:Bind viewModel.ConnectAsyncCommand}" 
+                    Margin="0,16,0,0"/>
+        </Grid>
+        <StackPanel x:Name="ConnectedStackPanelInformation"
+                Visibility="{Binding isConnected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="16">
+            <TextBlock Text="You are connected!" FontSize="24"/>
+            <Button Content="Disconnect" Command="{x:Bind viewModel.DisconnectAsyncCommand}"/>
+        </StackPanel>
+    </Grid>
+        
+
+</Page>

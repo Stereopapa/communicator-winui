@@ -43,7 +43,7 @@ public class ServerConnectionService : IServerConnectionService{
             return 1;
 
         } catch(Exception ex){
-            Console.WriteLine($"Connect Error: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Connect Error: {ex.Message}");
             return -1;
         }
         
@@ -97,7 +97,7 @@ public class ServerConnectionService : IServerConnectionService{
                 }
             }
         } catch (Exception ex){
-            Console.WriteLine("Receive loop error: " + ex.Message);
+            System.Diagnostics.Debug.WriteLine("Receive loop error: " + ex.Message);
         }
     }
 

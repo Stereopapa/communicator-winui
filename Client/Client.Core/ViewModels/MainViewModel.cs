@@ -53,8 +53,25 @@ public partial class MainViewModel : ObservableObject{
 
     public void messLogsRecived(string logsJson)
     {
-        Messages = JsonSerializer.Deserialize<ObservableCollection<Message>>(logsJson);
-        setIsMineMessagesInfo();
+        mainThreadDispatcher.RunOnMainThread(() =>
+        {
+            try
+            {
+                var options = new JsonSerializerOptions { TypeInfoResolver = AppJsonContext.Default };
+                var newMessages = JsonSerializer.Deserialize<List<Message>>(logsJson, options);
+                if (newMessages == null) return;
+                Messages.Clear();
+                foreach (var mess in newMessages)
+                {
+                    mess.IsMine = (mess.User == userName);
+                    Messages.Add(mess);
+                }
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("CRASH_DEBUG.txt", $"Error: {ex.Message}\nJSON: {logsJson}");
+            }
+        });
     }
 
     public void setIsMineMessagesInfo()

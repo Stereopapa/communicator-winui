@@ -86,7 +86,8 @@ public partial class MainViewModel : ObservableObject{
     {
         mainThreadDispatcher.RunOnMainThread(
             () => {
-                Message mess = JsonSerializer.Deserialize<Message>(messJson);
+                var options = new JsonSerializerOptions { TypeInfoResolver = AppJsonContext.Default };
+                Message mess = JsonSerializer.Deserialize<Message>(messJson, options);
                 mess.IsMine = (mess.User == userName);
                 messages.Add(mess);
                 }

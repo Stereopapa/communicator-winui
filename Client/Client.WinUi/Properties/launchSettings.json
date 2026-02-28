@@ -1,9 +1,9 @@
 {
   "profiles": {
-    "Client (Package)": {
+    "Client.WinUi (Package)": {
       "commandName": "MsixPackage"
     },
-    "Client (Unpackaged)": {
+    "Client.WinUi (Unpackaged)": {
       "commandName": "Project"
     }
   }

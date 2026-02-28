@@ -32,7 +32,7 @@ namespace Client
 
         public App()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             ConfigureServices();
         }
         

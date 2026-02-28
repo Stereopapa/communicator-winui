@@ -28,3 +28,4 @@ Package.StoreAssociation.xml
 *.appxrecipe
 .DS_Store
 Thumbs.db
+*logs.*

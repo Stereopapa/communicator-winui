@@ -57,8 +57,7 @@ public partial class MainViewModel : ObservableObject{
         {
             try
             {
-                var options = new JsonSerializerOptions { TypeInfoResolver = AppJsonContext.Default };
-                var newMessages = JsonSerializer.Deserialize<List<Message>>(logsJson, options);
+                var newMessages = JsonSerializer.Deserialize<List<Message>>(logsJson, AppJsonContext.Default.ListMessage);
                 if (newMessages == null) return;
                 Messages.Clear();
                 foreach (var mess in newMessages)
@@ -86,8 +85,7 @@ public partial class MainViewModel : ObservableObject{
     {
         mainThreadDispatcher.RunOnMainThread(
             () => {
-                var options = new JsonSerializerOptions { TypeInfoResolver = AppJsonContext.Default };
-                Message mess = JsonSerializer.Deserialize<Message>(messJson, options);
+                Message mess = JsonSerializer.Deserialize<Message>(messJson, AppJsonContext.Default.Message);
                 mess.IsMine = (mess.User == userName);
                 messages.Add(mess);
                 }

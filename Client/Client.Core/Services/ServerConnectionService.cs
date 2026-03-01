@@ -121,11 +121,19 @@ public class ServerConnectionService : IServerConnectionService{
 
     public async Task<int> SendMessageAsync(Message mess)
     {
-        string json = JsonSerializer.Serialize(mess);
-        string prefJson = $"mess:{json}";
-        int res = await SendDataToServerAsync(prefJson);
-        if (res == 0) { return 0; }
-        return 1;
+        try
+        {
+            string json = JsonSerializer.Serialize(mess, AppJsonContext.Default.Message);
+
+            string prefJson = $"mess:{json}";
+            int res = await SendDataToServerAsync(prefJson);
+            return res == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Serialization Error: {ex.Message}");
+            return 1;
+        }
     }
 }
 

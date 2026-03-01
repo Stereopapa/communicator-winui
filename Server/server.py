@@ -62,6 +62,7 @@ class Server:
         print("logs_send")
 
     async def receive_mess(self, websocket, mess: str):
+        print("mess recived")
         content = json.loads(mess)
         user = content.get("User", "anonymous")
         msg_text = content.get("Content", "")
@@ -80,6 +81,7 @@ class Server:
             client.send(broadcast)
             for client in self._connected_clients
         ])
+        print("mess recived")
 
     @safe_dispatch
     async def dispatch(self, websocket):
